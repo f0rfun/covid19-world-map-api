@@ -60,6 +60,6 @@ const casesCountrySchema = new mongoose.Schema({
   },
 });
 
-const CasesCountry = mongoose.model("CasesCountry", casesCountrySchema);
+const CasesCountry = mongoose.model("cases_country", casesCountrySchema);
 
 module.exports = CasesCountry;
