@@ -22,8 +22,8 @@ const confirmedTimeSeriesSchema = new mongoose.Schema(
     },
     records: [
       {
-        date: { type: String, required: true }, // or Date if you want to do aggregations with the date else have to convert string to a date object
-        count: Number,
+        date: { type: String, required: false }, // or Date if you want to do aggregations with the date else have to convert string to a date object
+        count: String,
       },
     ],
   },
@@ -31,7 +31,8 @@ const confirmedTimeSeriesSchema = new mongoose.Schema(
 );
 
 confirmedTimeSeriesSchema.index(
-  { lat: 1, long: 1, "records.date": 1 },
+  // { lat: 1, long: 1, "records.date": 1 },
+  { lat: 1, long: 1 },
   { unique: true }
 );
 

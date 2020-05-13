@@ -14,14 +14,13 @@ const addNewConfirmedTimeSeries = async (req, res, next) => {
 
 const updateConfirmedTimeSeries = async (req, res, next) => {
   try {
-    var newRecord = { date: req.body.date, count: req.body.count };
-    console.log(newRecord);
-    var latLong = { lat: req.body.lat, long: req.body.long };
-    console.log(latLong);
+    let recordObject = req.body;
+
+    let latLong = { lat: req.body.lat, long: req.body.long };
     ConfirmedTimeSeries.findOneAndUpdate(
       latLong,
       {
-        $push: { records: newRecord },
+        $push: { records: recordObject.records },
       },
       { new: true },
       (err, doc) => {
@@ -38,10 +37,19 @@ const updateConfirmedTimeSeries = async (req, res, next) => {
 };
 
 const getAllConfirmedTimeSeries = async (req, res, next) => {
-  res.status(200);
-  const allConfirmedCases = await ConfirmedTimeSeries.find();
-  const { _id, __v, ...strippedRecord } = allConfirmedCases;
-  res.json(strippedRecord);
+  try {
+    res.status(200);
+    let strippedRecord = [];
+    const allConfirmedCases = await ConfirmedTimeSeries.find();
+    allConfirmedCases.forEach((aConfirmedCase) => {
+      const { _id, __v, ...record } = aConfirmedCase.toObject();
+      strippedRecord.push(record);
+    });
+    // const { _id, __v, ...strippedRecord } = allConfirmedCases;
+    res.json(strippedRecord);
+  } catch (err) {
+    next(err);
+  }
 };
 
 // const addConfirmedTimeSeries = async (req, res) => {
